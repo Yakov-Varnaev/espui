@@ -1,9 +1,10 @@
 from http import HTTPStatus
+
 from fastapi import HTTPException
 
 
 class JSONFileExpected(Exception):
-    message = 'Only JSON files are supported.'
+    message = "Only JSON files are supported."
 
 
 class NotFound(HTTPException):
@@ -14,4 +15,3 @@ class NotFound(HTTPException):
 class BadRequest(HTTPException):
     def __init__(self, **kwargs) -> None:
         super().__init__(status_code=HTTPStatus.BAD_REQUEST, **kwargs)
-

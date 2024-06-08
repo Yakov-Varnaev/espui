@@ -1,11 +1,12 @@
 from uuid import UUID
+
 from src.exceptions import NotFound
 from src.models import Match
 from src.repo import MatchFileRepository
 
 
 class BaseService:
-    def __init__(self, db:MatchFileRepository):
+    def __init__(self, db: MatchFileRepository):
         self.db = db
 
 

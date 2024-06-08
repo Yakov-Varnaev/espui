@@ -1,13 +1,13 @@
 import json
 import logging
 from pathlib import Path
-from typing_extensions import Iterator
 from uuid import UUID
+
+from typing_extensions import Iterator
 
 from src.encoders import UUIDEncoder
 from src.exceptions import JSONFileExpected
 from src.models import Match
-
 
 logger = logging.getLogger(__file__)
 
@@ -16,41 +16,42 @@ class MatchFileRepository:
     """
     Stores data in the specified file.
     """
+
     def __init__(self, file_path: Path | str | None = None) -> None:
         if file_path is None:
-            file_path = Path(__file__).resolve().parent.parent / 'data.json'
+            file_path = Path(__file__).resolve().parent.parent / "data.json"
         file_path = Path(file_path)
-        if file_path.suffix != '.json':
+        if file_path.suffix != ".json":
             raise JSONFileExpected()
         self.path = file_path
         self.__create_file()
         self.encoder = UUIDEncoder
 
     def __create_file(self) -> None:
-        logger.info(f'Creating file at: {self.path}.')
+        logger.info(f"Creating file at: {self.path}.")
         if self.path.exists():
-            logger.info('File already exists.')
+            logger.info("File already exists.")
             return
-        with open(self.path, 'w') as f:
-            f.write('')
-        logger.info(f'File created.')
+        with open(self.path, "w") as f:
+            f.write("")
+        logger.info(f"File created.")
 
     def __write_file(self, data: list[Match]) -> None:
-        logger.info(f'Writing to file: {self.path}.')
-        with open(self.path, 'w') as f:
+        logger.info(f"Writing to file: {self.path}.")
+        with open(self.path, "w") as f:
             json_data = json.dumps(
                 [m.model_dump(exclude_none=True) for m in data],
                 indent=2,
                 cls=UUIDEncoder,
             )
             f.write(json_data)
-        logger.info('Wrote to file.')
+        logger.info("Wrote to file.")
 
     def __read_file(self) -> list[Match]:
-        with open(self.path, 'r') as f:
+        with open(self.path, "r") as f:
             str_data = f.read()
             data = json.loads(str_data) if str_data else []
-        assert isinstance(data, list), 'We are fundamentally fucked.'
+        assert isinstance(data, list), "We are fundamentally fucked."
         return [Match(**m) for m in data]
 
     @property
@@ -89,11 +90,8 @@ class MatchFileRepository:
             return
         return data
 
-
-
-
     def delete(self, match_id: UUID) -> UUID | None:
-        remaining  = []
+        remaining = []
         deleted = False
         for match in self.iterator:
             if match.id == match_id:
@@ -103,7 +101,3 @@ class MatchFileRepository:
         if deleted:
             self.__write_file(remaining)
             return match_id
-
-
-
-

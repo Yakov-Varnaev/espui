@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from src.controllers import router
 
 

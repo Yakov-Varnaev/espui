@@ -8,4 +8,3 @@ class UUIDEncoder(JSONEncoder):
         if isinstance(o, UUID):
             return o.hex
         return super().default(o)
-

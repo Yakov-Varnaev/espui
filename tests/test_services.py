@@ -1,4 +1,5 @@
 import yaml
+
 from src.config import Config
 from src.models import Match
 from src.repo import MatchFileRepository
@@ -13,8 +14,8 @@ def test_match_creator(repository: MatchFileRepository, match_data: dict):
     match = repository.retrieve(created_match.id)
 
     assert match is not None
-    assert created_match.trigger == match_data['trigger']
-    assert created_match.replace == match_data['replace']
+    assert created_match.trigger == match_data["trigger"]
+    assert created_match.replace == match_data["replace"]
     assert created_match.vars is None
 
 
@@ -34,14 +35,15 @@ def test_match_retriever(repository: MatchFileRepository, match: Match):
 
 def test_match_updater(repository: MatchFileRepository, match: Match):
     service = MatchUpdater(repository)
-    res_match = service(match.id, Match(**{**match.model_dump(), 'trigger': 'new-trigger'}))
+    res_match = service(
+        match.id, Match(**{**match.model_dump(), "trigger": "new-trigger"})
+    )
     cnt = len([*repository.iterator])
-
 
     assert cnt == 1
     assert res_match is not None
     assert res_match.id == match.id
-    assert res_match.trigger == 'new-trigger'
+    assert res_match.trigger == "new-trigger"
 
 
 def test_match_deleter(repository: MatchFileRepository, match: Match):
@@ -52,15 +54,19 @@ def test_match_deleter(repository: MatchFileRepository, match: Match):
     assert repository.retrieve(match.id) is None
 
 
-def test_espanso_exporter(repository: MatchFileRepository, config: Config, match: Match):
+def test_espanso_exporter(
+    repository: MatchFileRepository, config: Config, match: Match
+):
     service = EspansoConfigExporter(repository, config.output_path)
     service()
 
     assert config.output_path.exists()
 
-    with open(config.output_path, 'r') as f:
+    with open(config.output_path, "r") as f:
         data = yaml.safe_load(f)
 
-
-    assert data == {'matches': [match.model_dump(exclude_none=True, exclude_unset=True, exclude={'id'})]}
-
+    assert data == {
+        "matches": [
+            match.model_dump(exclude_none=True, exclude_unset=True, exclude={"id"})
+        ]
+    }
