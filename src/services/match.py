@@ -1,4 +1,5 @@
 from uuid import UUID
+from src.exceptions import NotFound
 from src.models import Match
 from src.repo import MatchFileRepository
 
@@ -20,7 +21,10 @@ class MatchLister(BaseService):
 
 class MatchRetriever(BaseService):
     def __call__(self, match_id: UUID) -> Match:
-        return self.db.retrieve(match_id)
+        match = self.db.retrieve(match_id)
+        if not match:
+            raise NotFound
+        return match
 
 
 class MatchUpdater(BaseService):
@@ -30,4 +34,7 @@ class MatchUpdater(BaseService):
 
 class MatchDeleter(BaseService):
     def __call__(self, match_id: UUID) -> UUID:
-        return self.db.delete(match_id)
+        deleted_id = self.db.delete(match_id)
+        if deleted_id is None:
+            raise NotFound
+        return deleted_id

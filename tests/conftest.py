@@ -1,19 +1,42 @@
+import os
+from unittest.mock import patch
 from pathlib import Path
+from typing_extensions import Generator
 from uuid import uuid1
 import pytest
 
+from src.config import Config
 from src.models import Match
 from src.repo import MatchFileRepository
 
 
-@pytest.fixture
-def temp_file() -> Path:
-    return Path(__file__).resolve().parent / 'test_data.json'
+pytestmark = [pytest.mark.usefixtures('config')]
+
+
+
+@pytest.fixture(scope='function')
+def temp_files() -> Generator[tuple[Path, Path], None, None]:
+    data_path = Path(__file__).resolve().parent / 'test_data.json'
+    yml_path = Path(__file__).resolve().parent / 'test_data.yml'
+    yield data_path, yml_path
+    os.remove(data_path)
+    os.remove(yml_path)
 
 
 @pytest.fixture
-def repository(temp_file: Path) -> MatchFileRepository:
-    return MatchFileRepository(temp_file)
+def config(temp_files: tuple[Path, Path]) -> Generator[Config, None, None]:
+    file_path, yml_path = temp_files
+    config = Config(
+        file_path=file_path,
+        output_path=yml_path
+    )
+    with patch('src.dependencies.get_config', return_value=config):
+        yield config
+
+
+@pytest.fixture
+def repository(config: Config) -> MatchFileRepository:
+    return MatchFileRepository(config.file_path)
 
 
 @pytest.fixture
@@ -31,6 +54,6 @@ def match(repository: MatchFileRepository) -> Match:
 @pytest.fixture
 def match_data() -> dict:
     return {
-        'trigger': uuid1(),
-        'replace': uuid1(),
+        'trigger': str(uuid1()),
+        'replace': str(uuid1()),
     }

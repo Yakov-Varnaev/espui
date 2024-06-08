@@ -70,16 +70,15 @@ class MatchFileRepository:
             return matches
         return [m for m in matches if query.lower() in m.trigger.lower()]
 
-    def retrieve(self, match_id: UUID) -> Match:
+    def retrieve(self, match_id: UUID) -> Match | None:
         for match in self.iterator:
             if match.id == match_id:
                 return match
-        raise NotFound
 
     def update(self, match_id: UUID, data: Match) -> Match:
         ...
 
-    def delete(self, match_id: UUID) -> UUID:
+    def delete(self, match_id: UUID) -> UUID | None:
         remaining  = []
         deleted = False
         for match in self.iterator:
@@ -90,7 +89,6 @@ class MatchFileRepository:
         if deleted:
             self.__write_file(remaining)
             return match_id
-        raise NotFound
 
 
 

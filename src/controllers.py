@@ -1,9 +1,10 @@
 from uuid import UUID
 from fastapi import APIRouter, Depends
 
-from src.dependencies import match_creator, match_deleter, match_lister, match_retriver, match_updater
+from src.dependencies import espanso_exporter, match_creator, match_deleter, match_lister, match_retriver, match_updater
 from src.models import Match
 from src.services import MatchCreator, MatchDeleter, MatchUpdater, MatchRetriever, MatchLister
+from src.services.espanso import EspansoConfigExporter
 
 
 router = APIRouter(prefix='/matches')
@@ -39,3 +40,8 @@ def update_match(
 @router.delete('/{id}/')
 def delete_match(id: UUID, service: MatchDeleter = Depends(match_deleter)) -> UUID:
     return service(id)
+
+
+@router.get('/export/')
+def export_matches(force: bool = False, service: EspansoConfigExporter = Depends(espanso_exporter)) -> None:
+    service(force)

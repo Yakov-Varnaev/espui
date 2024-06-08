@@ -1,6 +1,7 @@
 from fastapi import Depends
 from src.config import Config
 from src.repo import MatchFileRepository
+from src.services.espanso import EspansoConfigExporter
 from src.services.match import MatchCreator, MatchDeleter, MatchLister, MatchRetriever, MatchUpdater
 
 
@@ -30,3 +31,7 @@ def match_updater(db: MatchFileRepository = Depends(get_db)) -> MatchUpdater:
 
 def match_deleter(db: MatchFileRepository = Depends(get_db)) -> MatchDeleter:
     return MatchDeleter(db)
+
+
+def espanso_exporter(db: MatchFileRepository = Depends(get_db), config: Config = Depends(get_config)) -> EspansoConfigExporter:
+    return EspansoConfigExporter(db, config.output_path)
