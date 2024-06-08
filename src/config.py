@@ -1,13 +1,8 @@
 from pathlib import Path
-from pydantic import field_validator
+from pydantic import Field
 from pydantic_settings import BaseSettings
 
 
 class Config(BaseSettings):
-    file_path: Path
-    output_path: Path
-
-    @field_validator('file_path', 'output_path')
-    @staticmethod
-    def validate_file_path(value: Path | str | None) -> Path | None:
-        return Path(value).resolve() if value else None
+    file_path: Path = Field(default=Path(__file__).resolve().parent.parent / 'data.json')
+    output_path: Path =Field(default=Path(__file__).resolve().parent.parent / 'data.yaml')

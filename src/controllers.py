@@ -2,12 +2,21 @@ from uuid import UUID
 from fastapi import APIRouter, Depends
 
 from src.dependencies import espanso_exporter, match_creator, match_deleter, match_lister, match_retriver, match_updater
+from src.exceptions import BadRequest
 from src.models import Match
 from src.services import MatchCreator, MatchDeleter, MatchUpdater, MatchRetriever, MatchLister
 from src.services.espanso import EspansoConfigExporter
 
 
 router = APIRouter(prefix='/matches')
+
+
+@router.get('/export/')
+def export_matches(force: bool = False, service: EspansoConfigExporter = Depends(espanso_exporter)) -> None:
+    try:
+        service(force)
+    except FileExistsError as e:
+        raise BadRequest(detail=str(e))
 
 
 @router.post('/')
@@ -42,6 +51,3 @@ def delete_match(id: UUID, service: MatchDeleter = Depends(match_deleter)) -> UU
     return service(id)
 
 
-@router.get('/export/')
-def export_matches(force: bool = False, service: EspansoConfigExporter = Depends(espanso_exporter)) -> None:
-    service(force)

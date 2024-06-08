@@ -29,7 +29,10 @@ class MatchRetriever(BaseService):
 
 class MatchUpdater(BaseService):
     def __call__(self, match_id: UUID, data: Match) -> Match:
-        return self.db.update(match_id, data)
+        match = self.db.update(match_id, data)
+        if not match:
+            raise NotFound
+        return match
 
 
 class MatchDeleter(BaseService):

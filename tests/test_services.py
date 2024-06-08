@@ -1,5 +1,4 @@
 import yaml
-import pytest
 from src.config import Config
 from src.models import Match
 from src.repo import MatchFileRepository

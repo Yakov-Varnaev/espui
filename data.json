@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "46df1f9104f04f61be66ea9a4b9699cc",
+    "trigger": "string",
+    "replace": "string"
+  },
+  {
+    "id": "3a419fa0bacb493db061fbf9a3121057",
+    "trigger": "string1",
+    "replace": "string"
+  }
+]

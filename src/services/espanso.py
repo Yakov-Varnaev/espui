@@ -14,7 +14,7 @@ logger = logging.getLogger(__file__)
 class EspansoConfigBuilder:
     def __init__(self, output_path: Path | str | None) -> None:
         if output_path is None:
-            output_path = Path(__file__).resolve().parent.parent.parent
+            output_path = Path(__file__).resolve().parent.parent.parent / 'match.yaml'
             logging.info(f'No output path provided defaulting to {output_path}.')
         self.output_path = Path(output_path)
 

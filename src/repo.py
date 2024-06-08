@@ -5,7 +5,7 @@ from typing_extensions import Iterator
 from uuid import UUID
 
 from src.encoders import UUIDEncoder
-from src.exceptions import JSONFileExpected, NotFound
+from src.exceptions import JSONFileExpected
 from src.models import Match
 
 
