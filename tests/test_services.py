@@ -5,7 +5,7 @@ from src.models import Match
 from src.repo import MatchFileRepository
 from src.services import MatchCreator
 from src.services.espanso import EspansoConfigExporter
-from src.services.match import MatchDeleter, MatchLister, MatchRetriever
+from src.services.match import MatchDeleter, MatchLister, MatchRetriever, MatchUpdater
 
 
 def test_match_creator(repository: MatchFileRepository, match_data: dict):
@@ -33,9 +33,16 @@ def test_match_retriever(repository: MatchFileRepository, match: Match):
     assert res_match == match
 
 
-@pytest.mark.skip('not impl')
 def test_match_updater(repository: MatchFileRepository, match: Match):
-    ...
+    service = MatchUpdater(repository)
+    res_match = service(match.id, Match(**{**match.model_dump(), 'trigger': 'new-trigger'}))
+    cnt = len([*repository.iterator])
+
+
+    assert cnt == 1
+    assert res_match is not None
+    assert res_match.id == match.id
+    assert res_match.trigger == 'new-trigger'
 
 
 def test_match_deleter(repository: MatchFileRepository, match: Match):

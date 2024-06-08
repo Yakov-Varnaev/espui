@@ -75,8 +75,22 @@ class MatchFileRepository:
             if match.id == match_id:
                 return match
 
-    def update(self, match_id: UUID, data: Match) -> Match:
-        ...
+    def update(self, match_id: UUID, data: Match) -> Match | None:
+        res = []
+        data.id = match_id
+        found = False
+        for match in self.iterator:
+            if match.id == match_id:
+                found = True
+                match = data
+            res.append(match)
+        self.__write_file(res)
+        if not found:
+            return
+        return data
+
+
+
 
     def delete(self, match_id: UUID) -> UUID | None:
         remaining  = []
