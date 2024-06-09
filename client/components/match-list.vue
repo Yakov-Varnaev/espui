@@ -13,6 +13,13 @@ export default {
     }
   },
   methods: {
+    addMatch(match) {
+      console.log(match)
+      this.matches.splice(0, 0, match)
+    },
+    deleteMatch(matchId) {
+      this.matches = this.matches.filter((m) => m.id !== matchId);
+    },
     async fetchMatches() {
       let query = {}
       if (this.query) {
@@ -32,9 +39,13 @@ export default {
 
 <template>
   <div>
-    <v-text-field label="Search" v-model="query" />
+    <div class="d-flex align-center justify-center">
+      <v-text-field label="Search" v-model="query" variant="outlined" class="mr-2 mt-5 pa-0" />
+      <match-overlay @addMatch="addMatch" />
+    </div>
+    <v-divider />
     <v-list>
-      <match-item v-for="match in matches" :match="match" class="mt-3" />
+      <match-item v-for="match in matches" :match="match" class="mt-3" @delete="deleteMatch" />
     </v-list>
   </div>
 </template>

@@ -1,12 +1,20 @@
 [
   {
-    "id": "46df1f9104f04f61be66ea9a4b9699cc",
-    "trigger": "string",
-    "replace": "string"
+    "id": "4afe5911548b45469aca0d6b44aa7245",
+    "trigger": ":new-with-vars",
+    "replace": "aalskfjasldkfjasdklf",
+    "vars": [
+      {
+        "name": "date",
+        "type": "date",
+        "params": []
+      }
+    ]
   },
   {
-    "id": "3a419fa0bacb493db061fbf9a3121057",
-    "trigger": "string1",
-    "replace": "string"
+    "id": "3f13ebad4d554ae39a214c2334a79c93",
+    "trigger": "New",
+    "replace": "some new text",
+    "vars": []
   }
 ]

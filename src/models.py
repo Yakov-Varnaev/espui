@@ -6,7 +6,7 @@ from pydantic import UUID4, BaseModel, Field
 class MatchExtra(BaseModel):
     name: str
     type: str
-    params: dict
+    params: list | None = None
 
 
 class Match(BaseModel):

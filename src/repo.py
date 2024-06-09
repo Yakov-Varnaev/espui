@@ -61,7 +61,7 @@ class MatchFileRepository:
 
     def create(self, match: Match) -> Match:
         matches = self.__read_file()
-        matches.append(match)
+        matches.insert(0, match)
         self.__write_file(matches)
         return match
 
