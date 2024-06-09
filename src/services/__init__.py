@@ -8,10 +8,10 @@ from src.services.match import (
 )
 
 __all__ = [
-    "MatchCreator",
-    "MatchLister",
-    "MatchRetriever",
-    "MatchUpdater",
-    "MatchDeleter",
-    "EspansoConfigExporter",
+    'MatchCreator',
+    'MatchLister',
+    'MatchRetriever',
+    'MatchUpdater',
+    'MatchDeleter',
+    'EspansoConfigExporter',
 ]

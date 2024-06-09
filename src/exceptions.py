@@ -4,7 +4,7 @@ from fastapi import HTTPException
 
 
 class JSONFileExpected(Exception):
-    message = "Only JSON files are supported."
+    message = 'Only JSON files are supported.'
 
 
 class NotFound(HTTPException):

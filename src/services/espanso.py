@@ -13,21 +13,21 @@ logger = logging.getLogger(__file__)
 class EspansoConfigBuilder:
     def __init__(self, output_path: Path | str | None) -> None:
         if output_path is None:
-            output_path = Path(__file__).resolve().parent.parent.parent / "match.yaml"
-            logging.info(f"No output path provided defaulting to {output_path}.")
+            output_path = Path(__file__).resolve().parent.parent.parent / 'match.yaml'
+            logging.info(f'No output path provided defaulting to {output_path}.')
         self.output_path = Path(output_path)
 
     def export(self, matches: list[Match], force: bool = False) -> None:
         if self.output_path.exists() and not force:
-            raise FileExistsError(f"File {self.output_path} already exists.")
-        logging.info(f"Exporting espanso config to {self.output_path}.")
+            raise FileExistsError(f'File {self.output_path} already exists.')
+        logging.info(f'Exporting espanso config to {self.output_path}.')
 
-        with open(self.output_path, "w") as f:
+        with open(self.output_path, 'w') as f:
             yaml.dump(
                 {
-                    "matches": [
+                    'matches': [
                         m.model_dump(
-                            exclude_unset=True, exclude_none=True, exclude={"id"}
+                            exclude_unset=True, exclude_none=True, exclude={'id'}
                         )
                         for m in matches
                     ]
@@ -35,7 +35,7 @@ class EspansoConfigBuilder:
                 f,
             )
 
-        logging.info(f"Espanso config exported succesfully.")
+        logging.info(f'Espanso config exported succesfully.')
 
 
 class EspansoConfigExporter(BaseService):

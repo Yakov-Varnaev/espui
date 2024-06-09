@@ -14,9 +14,10 @@ pytest = "^8.2.2"
 uvicorn = {extras = ["standart"], version = "^0.30.1"}
 gunicorn = "^22.0.0"
 pyyaml = "^6.0.1"
-black = "^24.4.2"
-axblack = "^20220330"
 isort = "^5.13.2"
+axblack = "^20220330"
+
+
 
 
 [build-system]
