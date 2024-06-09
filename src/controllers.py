@@ -43,8 +43,11 @@ def create_match(
 
 
 @router.get("/")
-def list_matches(service: MatchLister = Depends(match_lister)) -> list[Match]:
-    return service()
+def list_matches(
+    query: str | None = None,
+    service: MatchLister = Depends(match_lister),
+) -> list[Match]:
+    return service(query)
 
 
 @router.get("/{id}/")

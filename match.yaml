@@ -1,0 +1,3 @@
+matches:
+- replace: string
+  trigger: string
