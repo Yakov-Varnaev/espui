@@ -12,6 +12,7 @@ export default {
       default: () => ({
         trigger: '',
         replace: '',
+        tags: [],
         vars: []
       })
     }
@@ -22,13 +23,23 @@ export default {
         method: 'POST',
         body: this.currentMatch
       })
+      return data
+    },
+    async updateMatch() {
+      const data = await $fetch(`http://localhost:8000/api/v1/matches/${this.currentMatch.id}/`, {
+        method: 'PUT',
+        body: this.currentMatch,
+      })
+      return data
     },
     async submit() {
       if (this.isEdit) {
+        let respData = await this.updateMatch()
+        this.$emit('update', respData)
       } else {
-        await this.saveMatch()
+        let respData = await this.saveMatch()
+        this.$emit('close', respData)
       }
-      this.$emit('close', this.currentMatch)
     },
     addVar() {
       this.currentMatch.vars = [{ name: '', type: '', params: [] }, ...this.currentMatch.vars]
@@ -38,8 +49,9 @@ export default {
     }
   },
   data() {
-    let initialMatch = { ...this.match }
-    let currentMatch = { ...this.match }
+    let initialMatch = JSON.parse(JSON.stringify(this.match))
+    let currentMatch = JSON.parse(JSON.stringify(this.match))
+
     return {
       initialMatch, currentMatch,
     }
@@ -70,7 +82,7 @@ export default {
 
     </v-card-text>
     <v-card-actions>
-      <form-buttons @cancel="$emit('cancel')" @submit="submit" />
+      <form-buttons @cancel="$emit('cancel')" @close="$emit('close')" @submit="submit" submitText="Save" />
     </v-card-actions>
   </v-card>
 </template>

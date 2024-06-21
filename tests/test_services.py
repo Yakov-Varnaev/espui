@@ -67,6 +67,10 @@ def test_espanso_exporter(
 
     assert data == {
         "matches": [
-            match.model_dump(exclude_none=True, exclude_unset=True, exclude={"id"})
+            match.model_dump(
+                exclude_none=True,
+                exclude_unset=True,
+                exclude={"id", "tags"}
+            )
         ]
     }

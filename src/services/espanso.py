@@ -27,7 +27,9 @@ class EspansoConfigBuilder:
                 {
                     'matches': [
                         m.model_dump(
-                            exclude_unset=True, exclude_none=True, exclude={'id'}
+                            exclude_unset=True,
+                            exclude_none=True,
+                            exclude={'id', 'tags'}
                         )
                         for m in matches
                     ]
