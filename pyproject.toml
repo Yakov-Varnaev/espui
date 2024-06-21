@@ -16,6 +16,7 @@ gunicorn = "^22.0.0"
 pyyaml = "^6.0.1"
 isort = "^5.13.2"
 axblack = "^20220330"
+pytest-icdiff = "^0.9"
 
 
 

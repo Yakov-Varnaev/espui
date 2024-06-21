@@ -65,11 +65,32 @@ class MatchFileRepository:
         self.__write_file(matches)
         return match
 
-    def list(self, query: str | None = None) -> list[Match]:
+    @staticmethod
+    def __filter(
+        matches: list[Match],
+        query: str | None = None,
+        tags: list[str] | None = None,
+    ) -> list[Match]:
+        def filter(m: Match) -> bool:
+            res = []
+            if query:
+                res.append(query.lower() in m.trigger.lower())
+            if tags:
+                res.append(
+                    m.tags is not None and set(tags).intersection(m.tags)
+                )
+            return all(res)
+
+        return [m for m in matches if filter(m)]
+
+
+    def list(
+        self, 
+        query: str | None = None,
+        tags: list[str] | None = None,
+    ) -> list[Match]:
         matches = self.__read_file()
-        if not query:
-            return matches
-        return [m for m in matches if query.lower() in m.trigger.lower()]
+        return self.__filter(matches, query, tags)
 
     def retrieve(self, match_id: UUID) -> Match | None:
         for match in self.iterator:

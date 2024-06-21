@@ -16,8 +16,12 @@ class MatchCreator(BaseService):
 
 
 class MatchLister(BaseService):
-    def __call__(self, query: str | None = None) -> list[Match]:
-        return self.db.list(query)
+    def __call__(
+        self,
+        query: str | None = None,
+        tags: list[str] | None = None,
+    ) -> list[Match]:
+        return self.db.list(query, tags)
 
 
 class MatchRetriever(BaseService):

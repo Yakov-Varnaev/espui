@@ -1,20 +1,28 @@
 [
   {
     "id": "4afe5911548b45469aca0d6b44aa7245",
-    "trigger": ":new-with-vars",
-    "replace": "aalskfjasldkfjasdklf",
+    "trigger": ":new-with-varsfff",
+    "replace": "textasdfsdasdfasdfasdf",
     "vars": [
       {
         "name": "date",
         "type": "date",
         "params": []
       }
+    ],
+    "tags": [
+      "test",
+      "another"
     ]
   },
   {
     "id": "3f13ebad4d554ae39a214c2334a79c93",
     "trigger": "New",
     "replace": "some new text",
-    "vars": []
+    "vars": [],
+    "tags": [
+      "django",
+      "drf"
+    ]
   }
 ]

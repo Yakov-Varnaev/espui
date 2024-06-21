@@ -41,9 +41,11 @@ def create_match(data: Match, service: MatchCreator = Depends(match_creator),) -
 
 @router.get('/')
 def list_matches(
-    query: str | None = None, service: MatchLister = Depends(match_lister),
+    query: str | None = None,
+    tags: str | None = None,
+    service: MatchLister = Depends(match_lister),
 ) -> list[Match]:
-    return service(query)
+    return service(query, tags.split(',') if tags else None)
 
 
 @router.get('/{id}/')

@@ -12,12 +12,14 @@ export default {
     }
   },
   methods: {
-    async deleteMatch() {
-      console.log('deleting')
-      await $fetch(`http://localhost:8000/api/v1/matches/${this.match.id}/`, {
-        method: 'delete'
-      })
-      this.$emit('delete', this.match.id)
+    getColor() {
+      return '#' + (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+    },
+    deleteMatch(matchID) {
+      this.$emit("delete", matchID)
+    },
+    updateMatch(match) {
+      this.$emit("update", match)
     }
   }
 }
@@ -27,38 +29,16 @@ export default {
   <v-card variant="outlined">
     <v-card-title class="d-flex align-center">
       {{ match.trigger }}
-      <v-btn class="ml-auto" icon flat @click="deleteOverlay = true" size="xs">
-        <v-icon>mdi-pencil</v-icon>
-      </v-btn>
-
-      <v-dialog v-model="deleteOverlay">
-        <template v-slot:activator>
-          <v-btn icon flat @click="deleteOverlay = true">
-            <v-icon>mdi-trash-can</v-icon>
-          </v-btn>
-        </template>
-
-        <template v-slot:default>
-          <v-card>
-            <v-card-text>
-              <div>
-                Do you really want to delete match with trigger {{ match.trigger }}?
-              </div>
-              <v-row no-gutters>
-                <v-col>
-                  <submit-btn block @click="deleteMatch" />
-                </v-col>
-                <v-col>
-                  <cancel-btn block @click="deleteOverlay = false" />
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-        </template>
-
-      </v-dialog>
+      <v-spacer />
+      <match-edit-dialog :match="match" @update="updateMatch" />
+      <match-delete-dialog :match="match" @delete="deleteMatch" />
     </v-card-title>
     <v-card-text>
+      <div>
+        <v-chip v-for="tag in match.tags" :key="tag" :color="getColor()" class="text-caption">
+          {{ tag }}
+        </v-chip>
+      </div>
       <div>
         {{ match.replace }}
       </div>

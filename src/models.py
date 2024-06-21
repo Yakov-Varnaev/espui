@@ -14,3 +14,4 @@ class Match(BaseModel):
     trigger: str
     replace: str
     vars: list[MatchExtra] | None = None
+    tags: list[str] | None = None

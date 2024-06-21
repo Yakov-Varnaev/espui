@@ -20,6 +20,9 @@ export default {
     deleteMatch(matchId) {
       this.matches = this.matches.filter((m) => m.id !== matchId);
     },
+    async updateMatch() {
+      await this.fetchMatches()
+    },
     async fetchMatches() {
       let query = {}
       if (this.query) {
@@ -45,7 +48,7 @@ export default {
     </div>
     <v-divider />
     <v-list>
-      <match-item v-for="match in matches" :match="match" class="mt-3" @delete="deleteMatch" />
+      <match-item v-for="match in matches" :match="match" class="mt-3" @delete="deleteMatch" @update="updateMatch" />
     </v-list>
   </div>
 </template>
